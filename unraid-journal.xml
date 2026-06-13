@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+  <Name>Unraid-Journal</Name>
+  <Repository>ghcr.io/shaisegal/unraid-journal:latest</Repository>
+  <Registry>https://github.com/shaisegal/unraid-journal/pkgs/container/unraid-journal</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/shaisegal/unraid-templates/issues</Support>
+  <Project>https://github.com/shaisegal/unraid-templates</Project>
+  <Overview>Private, self-hosted single-user journal with filesystem storage, Markdown entries, attachments, search, and import/export.</Overview>
+  <Category>Productivity: Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8080]</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/unraid-journal.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/unraid-journal-icon.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="Web UI Port" Target="8080" Default="18080" Mode="tcp" Description="HTTP port used directly or as the Nginx Proxy Manager target. Container port 8080 remains unchanged." Type="Port" Display="always" Required="true" Mask="false">18080</Config>
+  <Config Name="Journal Data" Target="/data" Default="/mnt/user/appdata/unraid-journal" Mode="rw" Description="Persistent journal entries, attachments, settings, and search index." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/unraid-journal</Config>
+  <Config Name="Time Zone" Target="TZ" Default="Europe/Berlin" Mode="" Description="Container time zone." Type="Variable" Display="always" Required="true" Mask="false">Europe/Berlin</Config>
+  <Config Name="Admin Username" Target="ADMIN_USERNAME" Default="admin" Mode="" Description="Single-user login name." Type="Variable" Display="always" Required="true" Mask="false">admin</Config>
+  <Config Name="Admin Password Hash" Target="ADMIN_PASSWORD_HASH" Default="" Mode="" Description="Bcrypt password hash generated with the application helper." Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="Session Secret" Target="SESSION_SECRET" Default="" Mode="" Description="Random secret with at least 32 characters." Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="Maximum Import Upload" Target="IMPORT_MAX_UPLOAD_BYTES" Default="2147483648" Mode="" Description="Maximum uploaded import size in bytes." Type="Variable" Display="advanced" Required="true" Mask="false">2147483648</Config>
+  <Config Name="Maximum Extracted Import" Target="IMPORT_MAX_EXTRACTED_BYTES" Default="10737418240" Mode="" Description="Maximum total extracted import size in bytes." Type="Variable" Display="advanced" Required="true" Mask="false">10737418240</Config>
+  <Config Name="Maximum Import File" Target="IMPORT_MAX_FILE_BYTES" Default="2147483648" Mode="" Description="Maximum size of one extracted import file in bytes." Type="Variable" Display="advanced" Required="true" Mask="false">2147483648</Config>
+  <Config Name="Maximum Import Files" Target="IMPORT_MAX_FILES" Default="50000" Mode="" Description="Maximum number of files in one import." Type="Variable" Display="advanced" Required="true" Mask="false">50000</Config>
+  <Config Name="Maximum Import Path Depth" Target="IMPORT_MAX_PATH_DEPTH" Default="12" Mode="" Description="Maximum archive path depth." Type="Variable" Display="advanced" Required="true" Mask="false">12</Config>
+  <Config Name="Maximum Compression Ratio" Target="IMPORT_MAX_COMPRESSION_RATIO" Default="1000" Mode="" Description="Maximum accepted archive compression ratio." Type="Variable" Display="advanced" Required="true" Mask="false">1000</Config>
+</Container>
