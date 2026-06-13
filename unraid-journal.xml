@@ -14,7 +14,7 @@
   <WebUI>http://[IP]:[PORT:8080]</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/unraid-journal.xml</TemplateURL>
   <Icon>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/unraid-journal-icon.png</Icon>
-  <ExtraParams/>
+  <ExtraParams>--user 99:100</ExtraParams>
   <PostArgs/>
   <CPUset/>
   <DateInstalled/>

@@ -9,6 +9,7 @@ filesystem. Its default Unraid configuration is:
 - Web UI: `http://<unraid-host>:18080`
 - Persistent data: `/mnt/user/appdata/unraid-journal`
 - Container image: `ghcr.io/shaisegal/unraid-journal:latest`
+- Container process: UID/GID `99:100` (`nobody:users` on Unraid)
 
 ## Installation
 
