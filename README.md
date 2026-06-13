@@ -13,20 +13,21 @@ filesystem. Its default Unraid configuration is:
 
 ## Installation
 
-Once the application has been accepted into Community Applications, search for
-`Unraid Journal` and select **Install**.
+The application has not yet been submitted to Community Applications. Until it
+is accepted, install the public template from an Unraid terminal:
 
-Before installation, generate the required values:
-
-```bash
-docker run --rm ghcr.io/shaisegal/unraid-journal:latest \
-  hash-password 'your-password'
-
-openssl rand -hex 32
+```sh
+curl -fsSL \
+  https://raw.githubusercontent.com/shaisegal/unraid-templates/main/unraid-journal.xml \
+  -o /boot/config/plugins/dockerMan/templates-user/my-unraid-journal.xml
 ```
 
-Enter the first result as **Admin Password Hash** and the second as
-**Session Secret**. Keep both values private.
+Then select **Unraid-Journal** under **Docker > Add Container** and apply the
+template. On first access, the web interface asks for the administrator
+username and password. The session secret is generated automatically and the
+authentication data is stored in `/data/.auth.yml`.
+
+No password hash or session secret needs to be generated during installation.
 
 ## Nginx Proxy Manager
 
