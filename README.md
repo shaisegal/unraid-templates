@@ -11,6 +11,11 @@ filesystem. Its default Unraid configuration is:
 - Container image: `ghcr.io/shaisegal/unraid-journal:latest`
 - Container process: UID/GID `99:100` (`nobody:users` on Unraid)
 
+The files `unraid-journal.xml`, `ca_profile.xml`, and
+`unraid-journal-icon.png` in this repository are published artifacts. Their
+only canonical source is `shaisegal/unraid-journal/unraid/`; update them via
+the sync workflow and `scripts/sync-unraid-templates.sh`, not by hand here.
+
 ## Installation
 
 The application has not yet been submitted to Community Applications. Until it
