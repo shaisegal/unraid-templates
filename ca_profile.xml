@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Maintainer>
-  <Icon>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/unraid-journal-icon.png</Icon>
-  <Profile>Self-hosted, filesystem-based journal applications.</Profile>
-  <WebPage>https://github.com/shaisegal/unraid-templates</WebPage>
+  <Icon>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/membrain-icon.png</Icon>
+  <Profile>Self-hosted, filesystem-based personal knowledge and journaling applications.</Profile>
+  <WebPage>https://github.com/shaisegal/membrain</WebPage>
 </Maintainer>
