@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+  <Name>Pipelinarr</Name>
+  <Repository>ghcr.io/shaisegal/pipelinarr:0.2.0-beta.2</Repository>
+  <Registry>https://github.com/shaisegal/pipelinarr/pkgs/container/pipelinarr</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/shaisegal/unraid-templates/issues</Support>
+  <Project>https://github.com/shaisegal/unraid-templates</Project>
+  <Overview>Pipelinarr is a deterministic, self-hosted movie release preparation pipeline. This private beta requires configuration and secret files to be bootstrapped before first start.</Overview>
+  <Category>MediaApp:Video Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8080]</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/pipelinarr.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/pipelinarr-icon.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>Before installing, run the private-beta bootstrap script from the Pipelinarr source repository. The image is private and requires an Unraid Docker registry login with a GitHub classic PAT scoped to read:packages.</Requires>
+  <Config Name="Web UI Port" Target="8080" Default="18081" Mode="tcp" Description="HTTP port used directly or as the reverse-proxy target. Container port 8080 remains unchanged." Type="Port" Display="always" Required="true" Mask="false">18081</Config>
+  <Config Name="Pipelinarr Configuration" Target="/config" Default="/mnt/user/appdata/pipelinarr-beta" Mode="rw" Description="Persistent configuration, secrets, database, logs, and templates for the private beta." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/pipelinarr-beta</Config>
+  <Config Name="Pipelinarr Data" Target="/data" Default="/mnt/user/data/torrents/pipelinarr-beta" Mode="rw" Description="Private-beta inbox, work, completed releases, failures, and archive." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/data/torrents/pipelinarr-beta</Config>
+  <Config Name="User ID" Target="PUID" Default="99" Mode="" Description="Unraid nobody user ID. The entrypoint drops privileges after preparing mounted directories." Type="Variable" Display="advanced" Required="true" Mask="false">99</Config>
+  <Config Name="Group ID" Target="PGID" Default="100" Mode="" Description="Unraid users group ID." Type="Variable" Display="advanced" Required="true" Mask="false">100</Config>
+  <Config Name="Time Zone" Target="TZ" Default="Europe/Berlin" Mode="" Description="Container time zone." Type="Variable" Display="always" Required="true" Mask="false">Europe/Berlin</Config>
+</Container>
