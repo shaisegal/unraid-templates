@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Container version="2">
   <Name>Pipelinarr</Name>
-  <Repository>ghcr.io/shaisegal/pipelinarr:0.2.0-beta.2</Repository>
+  <Repository>ghcr.io/shaisegal/pipelinarr:0.2.0-beta.3</Repository>
   <Registry>https://github.com/shaisegal/pipelinarr/pkgs/container/pipelinarr</Registry>
   <Network>bridge</Network>
   <MyIP/>
