@@ -9,7 +9,7 @@
   <Privileged>false</Privileged>
   <Support>https://github.com/shaisegal/membrain/issues</Support>
   <Project>https://github.com/shaisegal/membrain</Project>
-  <Overview>membrain is a private, self-hosted single-user journal with filesystem storage, Markdown entries, attachments, search, and import/export.</Overview>
+  <Overview>membrain is a private, self-hosted journal with private user accounts, filesystem storage, Markdown entries, attachments, search, and import/export.</Overview>
   <Category>Productivity: Tools:</Category>
   <WebUI>http://[IP]:[PORT:8080]</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/membrain.xml</TemplateURL>
@@ -23,6 +23,8 @@
   <Requires/>
   <Config Name="Web UI Port" Target="8080" Default="18080" Mode="tcp" Description="HTTP port used directly or as the Nginx Proxy Manager target. Container port 8080 remains unchanged." Type="Port" Display="always" Required="true" Mask="false">18080</Config>
   <Config Name="membrain Data" Target="/data" Default="/mnt/user/appdata/membrain" Mode="rw" Description="Persistent membrain entries, attachments, settings, and search index." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/membrain</Config>
+  <Config Name="Integration Allowed Origins" Target="INTEGRATION_ALLOWED_ORIGINS" Default="" Mode="" Description="Additional exact HTTP origins users may connect to, comma separated, e.g. http://immich:2283,http://paperless:8000. Legacy configured provider origins are also permitted." Type="Variable" Display="advanced" Required="false" Mask="false"></Config>
+  <Config Name="Trusted Proxies" Target="TRUSTED_PROXIES" Default="" Mode="" Description="Comma-separated CIDRs of trusted direct reverse proxies. Empty ignores forwarded headers. Use narrow proxy addresses, not the entire LAN." Type="Variable" Display="advanced" Required="false" Mask="false"></Config>
   <Config Name="Time Zone" Target="TZ" Default="Europe/Berlin" Mode="" Description="Container time zone." Type="Variable" Display="always" Required="true" Mask="false">Europe/Berlin</Config>
   <Config Name="Maximum Import Upload" Target="IMPORT_MAX_UPLOAD_BYTES" Default="2147483648" Mode="" Description="Maximum uploaded import size in bytes." Type="Variable" Display="advanced" Required="true" Mask="false">2147483648</Config>
   <Config Name="Maximum Extracted Import" Target="IMPORT_MAX_EXTRACTED_BYTES" Default="10737418240" Mode="" Description="Maximum total extracted import size in bytes." Type="Variable" Display="advanced" Required="true" Mask="false">10737418240</Config>
