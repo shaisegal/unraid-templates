@@ -1,3 +1,10 @@
+# Unraid Templates
+
+Community templates for self-hosted applications.
+
+- [Haben: installation, HTTPS and optional restic/Duplicati backups](docs/haben.md)
+- Existing templates: Unraid Journal, Pipelinarr and Membrain.
+
 # Unraid Journal
 
 Community Applications template and public support repository for Unraid
