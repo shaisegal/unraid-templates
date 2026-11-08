@@ -5,7 +5,7 @@ Die XML-Templates werden direkt aus diesem Repository geladen. Ein Git-Checkout 
 Neustart des Unraid-Servers sind nicht nötig.
 
 Diese Anleitung verwendet Unraids Docker-Oberfläche, Nginx Proxy Manager im Bridge-Netz
-und optional Duplicati. Die Beispielwerte für die Backup-Zeiten sind 12:30 Uhr für Haben
+und optional Duplicati. Die Beispielwerte für die Backup-Zeiten sind 10:00 Uhr für Haben
 und 13:00 Uhr für Duplicati, jeweils Europe/Berlin. Installation und Restore müssen noch
 auf einem echten Unraid-System geprüft werden.
 
@@ -156,7 +156,7 @@ Template **haben-backup** auswählen:
 | PGPASSWORD | dasselbe Datenbankpasswort wie oben |
 | RESTIC_PASSWORD | neues, separat erzeugtes Passwort |
 | RESTIC_REPOSITORY | `/backups` |
-| BACKUP_TIME | `12:30` |
+| BACKUP_TIME | `10:00` (Template-Vorgabe `12:30` überschreiben) |
 | TZ | `Europe/Berlin` |
 | RESTORE_CHECK_DAYS | `7` |
 
@@ -187,26 +187,9 @@ Sicherung möglichst keine Belege importieren oder umfangreiche Änderungen vorn
 Die folgenden Container-Pfade gelten bei der Zuordnung **Host `/mnt/user/` → Container
 `/backups/`**. Bei anderen Zuordnungen die Pfade anpassen.
 
-Prüfskript auf dem Unraid-Host bereitstellen:
-
-```sh
-mkdir -p /mnt/user/appdata/duplicati/scripts
-curl -fsSL \
-  https://raw.githubusercontent.com/shaisegal/unraid-templates/main/scripts/haben/duplicati-before.sh \
-  -o /mnt/user/appdata/duplicati/scripts/duplicati-before.sh
-chmod 755 /mnt/user/appdata/duplicati/scripts/duplicati-before.sh
-```
-
-Im Duplicati-Job unter **Erweiterte Optionen** setzen:
-
-```text
-run-script-before-required = /backups/appdata/duplicati/scripts/duplicati-before.sh
-run-script-timeout = 60s
-```
-
-Die Pflichtvariante verwenden, damit ein fehlgeschlagenes Prüfskript das Backup abbricht.
-Der Hook prüft lediglich den zuvor abgeschlossenen Haben-Backup-Lauf; er erstellt selbst
-kein Backup. Er braucht im Duplicati-Container `sh`, `grep` und `find` mit `-mmin`.
+Die gewählte Konfiguration verwendet **kein Duplicati-Prüfskript**. Falls zuvor
+`run-script-before-required` für das Haben-Prüfskript eingetragen wurde, diesen Eintrag
+entfernen. Andere, unabhängig eingerichtete Duplicati-Skripte unverändert lassen.
 
 Quellen und Filter im vorhandenen appdata-Backup prüfen:
 
@@ -222,13 +205,21 @@ sichern. In der Duplicati-Quellvorschau kontrollieren, dass kein übergeordneter
 Teile davon ausschließt. Der Duplicati-Nutzer muss alle Dateien lesen können; dies im
 echten Container prüfen und bei Bedarf gezielte Gruppen-/ACL-Leserechte einrichten.
 
-Duplicati startet im Beispiel täglich um **13:00 Uhr**. Die Haben-Sicherung inklusive
+Haben sichert täglich um **10:00 Uhr**, Duplicati startet um **13:00 Uhr**. Die Haben-Sicherung inklusive
 Prune und gegebenenfalls Restore-Test muss vorher fertig sein. Die Laufdauer zunächst
 messen und bei Bedarf BACKUP_TIME vorverlegen. Auch manuelle restic-Läufe dürfen sich
-nicht mit Duplicati überschneiden. Der Prüf-Hook erkennt vorhandene Locks, hält aber
-keine Sperre für die gesamte Laufzeit von Duplicati.
+nicht mit Duplicati überschneiden. Es gibt keine automatische Koordination. Ein grüner
+Duplicati-Status bestätigt nur die externe Kopie, nicht den Erfolg oder die Aktualität
+des Haben-Backups. Bei parallelen Änderungen kann die externe Repository-Kopie unvollständig
+sein. Daher die Haben-Backup-Ergebnisse regelmäßig separat kontrollieren.
 
-## 8. Abschlussprüfung
+## 8. Updates und laufender Betrieb
+
+Siehe [Image-Updates, Template-Einstellungen und Rollback](haben.md#updates-image-und-template-einstellungen).
+Ein Unraid-Container-Update übernimmt keine neuen Pflichtvariablen oder Mounts aus einer
+geänderten Template-Datei. Vor jedem Update Backup und Release-Hinweise prüfen.
+
+## 9. Abschlussprüfung
 
 - Haben ist über die HTTPS-Domain erreichbar; Anmeldung und Vorschauen funktionieren.
 - App, Datenbank und optionaler Backup-Container starten nach einem Unraid-Neustart.
