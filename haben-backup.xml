@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Container version="2">
+  <Name>haben-backup</Name>
+  <Repository>tristanteu/haben-backup:latest</Repository>
+  <Registry>https://hub.docker.com/r/tristanteu/haben-backup</Registry>
+  <Network>haben</Network>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Project>https://github.com/firsttris/haben</Project>
+  <Overview>Inoffizielles Unraid-Template fuer den offiziellen Haben-Backup-Container. Benoetigt haben-db und die App im Netzwerk haben. Sichert Datenbank und Belege lokal mit restic. Duplicati sichert danach das ruhende Repository extern. Keine Portfreigabe, kein SSH und kein Docker-Socket erforderlich. RESTIC_PASSWORD und HABEN_ENCRYPTION_KEY separat sichern.</Overview>
+  <Category>Backup:</Category>
+  <Beta>true</Beta>
+  <ExtraParams />
+  <PostArgs />
+  <Config Name="Database host" Target="PGHOST" Default="haben-db" Mode="" Description="Name des Datenbankcontainers." Type="Variable" Display="always" Required="true" Mask="false">haben-db</Config>
+  <Config Name="Database user" Target="PGUSER" Default="haben" Mode="" Description="Datenbanknutzer." Type="Variable" Display="always" Required="true" Mask="false">haben</Config>
+  <Config Name="Database name" Target="PGDATABASE" Default="haben" Mode="" Description="Datenbankname." Type="Variable" Display="always" Required="true" Mask="false">haben</Config>
+  <Config Name="Database password" Target="PGPASSWORD" Default="" Mode="" Description="Dasselbe Passwort wie in haben-db." Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="Repository" Target="RESTIC_REPOSITORY" Default="/backups" Mode="" Description="Lokales Repository im eingebundenen Verzeichnis." Type="Variable" Display="always" Required="true" Mask="false">/backups</Config>
+  <Config Name="Backup password" Target="RESTIC_PASSWORD" Default="" Mode="" Description="Mit openssl rand -base64 32 erzeugen und im Passwortmanager sichern." Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="Backup host" Target="BACKUP_HOST" Default="haben" Mode="" Description="Fester Instanzname fuer restic-Snapshots." Type="Variable" Display="always" Required="true" Mask="false">haben</Config>
+  <Config Name="Backup time" Target="BACKUP_TIME" Default="12:30" Mode="" Description="Taeglicher Start vor Duplicati um 13:00. Laufdauer testen." Type="Variable" Display="always" Required="true" Mask="false">12:30</Config>
+  <Config Name="Timezone" Target="TZ" Default="Europe/Berlin" Mode="" Description="Zeitzone inklusive Sommerzeit." Type="Variable" Display="always" Required="true" Mask="false">Europe/Berlin</Config>
+  <Config Name="Restore check interval" Target="RESTORE_CHECK_DAYS" Default="7" Mode="" Description="Test-Restore alle 7 Tage; braucht Platz fuer eine zweite Datenbank." Type="Variable" Display="always" Required="true" Mask="false">7</Config>
+  <Config Name="Documents" Target="/belege" Default="/mnt/user/appdata/haben/belege" Mode="ro" Description="Originalbelege nur lesend." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/haben/belege</Config>
+  <Config Name="Local restic repository" Target="/backups" Default="/mnt/user/appdata/haben/backup/repository" Mode="rw" Description="Dieses gesamte Verzeichnis mit Duplicati sichern." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/haben/backup/repository</Config>
+  <Config Name="Backup state" Target="/var/lib/haben-backup" Default="/mnt/user/appdata/haben/backup/state" Mode="rw" Description="Persistenter Status, Lock und temporaerer Dump; nicht extern sichern." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/haben/backup/state</Config>
+  <Support>https://github.com/shaisegal/unraid-templates/issues</Support>
+  <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/haben-backup.xml</TemplateURL>
+  <ReadMe>https://github.com/shaisegal/unraid-templates/blob/main/docs/haben.md</ReadMe>
+</Container>

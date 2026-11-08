@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Container version="2">
+  <Name>haben-db</Name>
+  <Repository>tristanteu/haben-db:latest</Repository>
+  <Registry>https://hub.docker.com/r/tristanteu/haben-db</Registry>
+  <Network>haben</Network>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Project>https://github.com/firsttris/haben</Project>
+  <Overview>PostgreSQL fuer Haben. Zuerst Netzwerk haben anlegen und Datenbank installieren. Keine Portfreigabe erforderlich. Passwort muss zur App passen. Updates nur nach Sicherung.</Overview>
+  <Category>Productivity:</Category>
+  <Beta>true</Beta>
+  <WebUI />
+  <ExtraParams />
+  <PostArgs />
+  <Config Name="Database user" Target="POSTGRES_USER" Default="haben" Mode="" Description="Bei haben belassen." Type="Variable" Display="always" Required="true" Mask="false">haben</Config>
+  <Config Name="Database name" Target="POSTGRES_DB" Default="haben" Mode="" Description="Bei haben belassen." Type="Variable" Display="always" Required="true" Mask="false">haben</Config>
+  <Config Name="Database password" Target="POSTGRES_PASSWORD" Default="" Mode="" Description="Mit openssl rand -hex 24 erzeugen; in DATABASE_URL der App verwenden." Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="Database storage" Target="/var/lib/postgresql/data" Default="/mnt/user/appdata/haben/db" Mode="rw" Description="Persistente Datenbank. Nicht als laufende Dateikopie wiederherstellen." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/haben/db</Config>
+  <Support>https://github.com/shaisegal/unraid-templates/issues</Support>
+  <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/haben-db.xml</TemplateURL>
+  <ReadMe>https://github.com/shaisegal/unraid-templates/blob/main/docs/haben.md</ReadMe>
+</Container>

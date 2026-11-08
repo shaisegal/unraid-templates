@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Container version="2">
+  <Name>haben-app</Name>
+  <Repository>tristanteu/haben:latest</Repository>
+  <Registry>https://hub.docker.com/r/tristanteu/haben</Registry>
+  <Network>haben</Network>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Project>https://github.com/firsttris/haben</Project>
+  <Overview>Inoffizielles Haben-Template. Benoetigt haben-db im Netzwerk haben. Fuer Nginx Proxy Manager im Bridge-Netz: HTTP an UNRAID-IP:3087 weiterleiten. Host-Port 3087 ist aenderbar und muss frei sein. Nur HTTPS-Domain fuer Anmeldung nutzen. App-Verzeichnisse muessen fuer UID/GID 1000 beschreibbar sein. Einrichtungscode im Containerlog. Caddy und restic sind optional und nicht enthalten.</Overview>
+  <Category>Productivity:</Category>
+  <Beta>true</Beta>
+  <WebUI>https://haben.example.de</WebUI>
+  <ExtraParams />
+  <PostArgs />
+  <Config Name="Database URL" Target="DATABASE_URL" Default="" Mode="" Description="postgres://haben:DEIN_HEX_PASSWORT@haben-db:5432/haben" Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="Public URL" Target="BETTER_AUTH_URL" Default="https://haben.example.de" Mode="" Description="Endgueltige HTTPS-Adresse ohne abschliessenden Slash." Type="Variable" Display="always" Required="true" Mask="false">https://haben.example.de</Config>
+  <Config Name="Authentication secret" Target="BETTER_AUTH_SECRET" Default="" Mode="" Description="openssl rand -base64 32" Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="Encryption key" Target="HABEN_ENCRYPTION_KEY" Default="" Mode="" Description="Separat mit openssl rand -base64 32 erzeugen und im Passwortmanager sichern." Type="Variable" Display="always" Required="true" Mask="true" />
+  <Config Name="Documents" Target="/var/lib/haben/belege" Default="/mnt/user/appdata/haben/belege" Mode="rw" Description="Belege und Dokumente." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/haben/belege</Config>
+  <Config Name="ERiC" Target="/var/lib/haben/eric" Default="/mnt/user/appdata/haben/eric" Mode="rw" Description="Optionale ELSTER-Bibliothek." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/haben/eric</Config>
+  <Config Name="ERiC logs" Target="/var/lib/haben/eric-log" Default="/mnt/user/appdata/haben/eric-log" Mode="rw" Description="ELSTER-Protokolle." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/haben/eric-log</Config>
+  <Config Name="Web port for proxy" Target="3000" Default="3087" Mode="tcp" Description="Freier Host-Port fuer NPM im Bridge-Netz. Intern bleibt Haben auf 3000. Keine Router-Portweiterleitung auf diesen Port einrichten." Type="Port" Display="always" Required="true" Mask="false">3087</Config>
+  <Support>https://github.com/shaisegal/unraid-templates/issues</Support>
+  <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/haben-app.xml</TemplateURL>
+  <ReadMe>https://github.com/shaisegal/unraid-templates/blob/main/docs/haben.md</ReadMe>
+</Container>
