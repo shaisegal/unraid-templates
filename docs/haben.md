@@ -4,6 +4,8 @@ Lokaler, inoffizieller Entwurf: drei DockerMan-Templates, nginx und offizieller 
 Noch nicht auf einem Unraid-Server getestet; kein Anspruch auf offizielle Haben-Unterstuetzung.
 Eine Community-Applications-Freigabe fuer diese Templates steht aus.
 
+Schritt-für-Schritt: [Installation auf Unraid](haben-unraid-installation.md).
+
 ## Voraussetzungen und Reihenfolge
 
 Die Werte in dieser Anleitung sind Beispiele: freien Host-Port und endgueltige HTTPS-Domain

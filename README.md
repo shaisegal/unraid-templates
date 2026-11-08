@@ -2,7 +2,8 @@
 
 Community templates for self-hosted applications.
 
-- [Haben: installation, HTTPS and optional restic/Duplicati backups](docs/haben.md)
+- [Haben: Schritt-für-Schritt-Installation auf Unraid](docs/haben-unraid-installation.md)
+- [Haben: Betrieb, Backups und Wiederherstellung](docs/haben.md)
 - Existing templates: Unraid Journal, Pipelinarr and Membrain.
 
 # Unraid Journal
@@ -52,3 +53,5 @@ Use HTTP on the trusted local network or configure an internal CA certificate.
 Open an issue in this repository and include the Unraid version, container log
 excerpt, and steps to reproduce. Remove journal content, credentials, secrets,
 and other private data before posting.
+
+[Review of obsolete template-sync PRs (2026-11-08)](docs/pull-request-review-2026-11-08.md)
