@@ -4,6 +4,8 @@ Lokaler, inoffizieller Entwurf: drei DockerMan-Templates, nginx und offizieller 
 Noch nicht auf einem Unraid-Server getestet; kein Anspruch auf offizielle Haben-Unterstuetzung.
 Eine Community-Applications-Freigabe fuer diese Templates steht aus.
 
+Schritt-für-Schritt: [Installation auf Unraid](haben-unraid-installation.md).
+
 ## Voraussetzungen und Reihenfolge
 
 Die Werte in dieser Anleitung sind Beispiele: freien Host-Port und endgueltige HTTPS-Domain
@@ -96,7 +98,8 @@ Keine Host-Skripte, SSH-Verbindung, Docker-Socket oder Aenderungen am Duplicati-
 4. RESTIC_PASSWORD separat mit `openssl rand -base64 32` erzeugen und im Passwortmanager
    sichern. HABEN_ENCRYPTION_KEY der App ebenfalls getrennt sichern. Ohne diese Werte
    reicht das externe Backup nicht fuer eine vollstaendige Wiederherstellung.
-5. BACKUP_TIME ist `12:30`, TZ ist `Europe/Berlin`. Duplicati startet im Beispiel um 13:00.
+5. BACKUP_TIME auf `10:00` aendern (Template-Vorgabe: `12:30`), TZ bleibt `Europe/Berlin`.
+   Duplicati startet um 13:00; ein Pruefskript wird in dieser Konfiguration nicht verwendet.
    Der Zeitplan steckt im Backup-Container; kein Unraid User Script erforderlich.
 6. Erstes Backup von Hand ausloesen, da der Container nicht sofort nach Installation sichert:
 
@@ -148,36 +151,29 @@ zuerst Duplicati, dann restic/Haben. Doppelte Versionierung und Aufraeumen im lo
 Repository koennen den externen Speicherbedarf erhoehen; nach den ersten Laeufen beobachten.
 
 **Wichtig:** restic darf das Repository waehrend des gesamten Duplicati-Backups nicht
-veraendern (Backup, Prune, Restore-Test). Die 30 Minuten Vorlauf sind zunaechst ein Vorschlag.
+veraendern (Backup, Prune, Restore-Test). Geplant sind drei Stunden Abstand: 10:00 -> 13:00.
 Dauer einschliesslich woechentlichem Restore-Test messen und BACKUP_TIME bei Bedarf
 vorverlegen. Keine manuellen restic-Laeufe waehrend Duplicati. Auch beim ersten Einrichten
 erst nach Abschluss des manuellen Backups den Duplicati-Job starten.
 
-### Pflicht-Pruefung in Duplicati
+### Duplicati ohne Prüfskript
 
-`scripts/haben/duplicati-before.sh` auf dem Host unter
-`/mnt/user/appdata/duplicati/scripts/duplicati-before.sh` ablegen und ausfuehrbar machen.
-Ueber den oben genannten Beispiel-Mount sieht Duplicati das Skript unter
-`/backups/appdata/duplicati/scripts/duplicati-before.sh`.
+Der gewählte Ablauf verwendet **kein Prüfskript**: Haben/restic sichert um 10:00 Uhr,
+Duplicati um 13:00 Uhr, jeweils Europe/Berlin. Einen zuvor für Haben gesetzten Eintrag
+`run-script-before-required` entfernen. Die Repository-Filter bleiben bestehen.
 
-Erweiterte Duplicati-Optionen:
+Ein erfolgreiches Duplicati-Backup bestätigt nicht, dass ein aktueller Haben-Snapshot
+vorliegt. Schlägt restic fehl, kann Duplicati unbemerkt einen älteren Stand sichern.
+Läuft restic gleichzeitig, kann Duplicati einen unvollständigen Repository-Stand erfassen.
+Zeitpläne trennen, Laufdauer inklusive Restore-Test beobachten und Ergebnisse kontrollieren.
 
-```text
-run-script-before-required = /backups/appdata/duplicati/scripts/duplicati-before.sh
-run-script-timeout = 60s
-```
+Das Skript `scripts/haben/duplicati-before.sh` bleibt als optionale Alternative im Repository.
+Es ist hier nicht einzurichten. Sein Standardlimit von 120 Minuten passt nicht zum Abstand
+10:00 -> 13:00: Bei späterer Nutzung müsste HABEN_MAX_AGE_MINUTES im Duplicati-Container
+entsprechend erhöht werden. Auch mit Hook gibt es keine Sperre über den gesamten Duplicati-Lauf.
 
-Der Hook prueft den offiziellen Status auf Erfolg und Alter (maximal 120 Minuten), einen
-vorhandenen Snapshot und fehlende restic-Lockdateien. Fehler brechen den Backup-Job ab.
-Er startet kein Haben-Backup und setzt fuer den spaeteren Duplicati-Lauf keine Sperre.
-Eine neue restic-Aktion nach der Pruefung kann er nicht verhindern: die Trennung der
-Zeitplaene bleibt notwendig. Eine verwaiste restic-Sperre fuehrt ebenfalls zum Abbruch;
-vor einem Entsperren immer sicherstellen, dass kein restic-Prozess mehr laeuft.
-Duplicati braucht hierfuer `sh`, `grep` und `find` mit `-mmin` im Container.
-
-Repository und Status muessen fuer Duplicatis Laufzeitnutzer lesbar sein. Beim ersten Lauf
-im echten Duplicati-Container pruefen. Falls noetig gezielte Gruppen-/ACL-Rechte vergeben,
-nicht pauschal chmod 777 oder PUID/PGID bei Haben setzen.
+Repository-Dateien müssen für Duplicatis Laufzeitnutzer lesbar sein. Dies im echten
+Container prüfen und bei Bedarf gezielte Gruppen-/ACL-Leserechte einrichten.
 
 ## Wiederherstellung und Updates
 
@@ -195,13 +191,67 @@ separaten einmaligen Container mit dem offiziellen Image und `restore.sh` verwen
 Restore zuerst isoliert testen, da der offizielle Ablauf Datenbank und Belege ersetzt.
 Der alte eigene Custom-Dump-Ablauf mit `pg_restore database.dump` gilt nicht mehr.
 
-Updates ueber Unraids Docker-Oberflaeche. Vorher `docker exec haben-backup backup.sh`
-ausfuehren, Erfolg und externes Backup pruefen. Datenbank zuerst aktualisieren und
-Bereitschaft abwarten, danach App und Backup-Container auf zusammen passende Versionen.
-Templates verwenden upstream `latest`; vor produktivem Betrieb getestete Versionen oder
-Image-Digests dokumentieren/fixieren. Ein Rollback braucht passende Images UND alten
-Datenbestand. Die DockerMan-Templates bieten keine Compose-Startabhaengigkeit: DB vor
-App/Backup starten, Bereitschaft pruefen und Autostart nach Serverneustart testen.
+## Updates: Image und Template-Einstellungen
+
+**Wichtig: Ein Container-Update aktualisiert das Image, aber nicht automatisch unsere
+Template-Einstellungen. Falls Haben künftig neue Pflichtvariablen oder Mounts benötigt,
+müssen wir diese ergänzen. Datenbankmigrationen können außerdem verhindern, dass man
+einfach auf ein älteres Image zurückwechselt.**
+
+### Was Unraid aktualisiert
+
+Die drei Templates verwenden `:latest`. Veröffentlicht der Herausgeber unter diesem Tag
+ein neues Image, kann Unraid es unter **Docker → Nach Updates suchen** erkennen und
+über **Update** installieren. Ein neuer Release unter einem anderen Tag allein löst
+kein Update des verwendeten Tags aus.
+
+Unraid erstellt beim Image-Update den Container mit seiner gespeicherten Konfiguration
+neu. Persistente appdata-Verzeichnisse bleiben eingebunden. Ein Pull dieses Repositories
+oder erneuter Download der XML-Datei passt einen bereits installierten Container nicht
+automatisch an. Auch PostgreSQLs bestehendes Passwort ändert sich nicht allein durch
+Bearbeiten von POSTGRES_PASSWORD.
+
+### Was wir vor einem Update prüfen müssen
+
+- Release-Hinweise und aktuelle Deployment-Konfiguration des Haben-Projekts vergleichen.
+- Neue oder geänderte Pflichtvariablen, Mounts, Ports und Startparameter bei Bedarf unter
+  **Docker → Container bearbeiten** ergänzen. Bestehende Secrets und Datenpfade bewahren.
+- Verwendete Image-Versionen/Digests, Containerkonfiguration und Backup-Snapshot-ID notieren.
+- Ein frisches Haben-Backup erstellen und erfolgreichen Abschluss prüfen:
+
+```sh
+docker exec haben-backup backup.sh
+cat /mnt/user/appdata/haben/backup/state/status
+```
+
+Das darf sich nicht mit Duplicati überschneiden. Vor dem Update auch die externe Sicherung
+des abgeschlossenen Repository-Stands abwarten. Neue Secrets und Template-Konfiguration
+separat sichern; die Unraid-Konfiguration liegt auf dem Boot-Stick.
+
+Danach nur die tatsächlich verfügbaren, zusammen passenden Images aktualisieren. Wenn
+auch die Datenbank aktualisiert wird, App/Backup vorher stoppen, DB aktualisieren und
+Bereitschaft abwarten, dann App/Backup aktualisieren bzw. starten. Vorgaben der jeweiligen
+Release-Hinweise haben Vorrang. Anmeldung, Belege, Vorschauen und Containerlogs prüfen.
+Unbeaufsichtigte automatische Updates sind für diese Installation zunächst nicht vorgesehen.
+
+### Rollback nach Migrationen
+
+Haben führt Datenbankmigrationen beim App-Start aus; das DB-Image kann außerdem ein
+PostgreSQL-Major-Upgrade durchführen. Ein älteres Image allein stellt den vorherigen
+Datenbestand nicht wieder her und kann mit dem neuen Schema inkompatibel sein.
+
+Für einen Rollback braucht es die passenden früheren Images, die damalige Konfiguration,
+das Backup **vor** dem Update und die ursprünglichen Schlüssel. Den Restore in einer
+isolierten Umgebung vorbereiten. Ein Restore auf den alten Stand verliert Änderungen,
+die erst nach diesem Backup vorgenommen wurden. Nicht blind `latest` zurückspielen:
+Version/Digest und Snapshot bewusst auswählen.
+
+### Regelmäßige Aufgaben
+
+Haben-Backup-Ergebnisse und Duplicati-Ergebnisse getrennt kontrollieren, freien Speicher
+beobachten und Wiederherstellung testen. Das lokal ausgestellte HTTPS-Zertifikat vor
+Ablauf erneuern und in NPM ersetzen. Keine Passwörter oder Zertifikatsschlüssel im
+Repository ablegen. Community-Veröffentlichung ist kein Bestandteil dieser Arbeiten.
 
 ## Pruefstatus
 
