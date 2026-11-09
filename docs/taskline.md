@@ -64,3 +64,9 @@ Lokale Unit-/HTTP-/Docker-Prüfungen ersetzen den echten Unraid-/Radarr-Test nic
 Der Wochenplan besitzt eine gemeinsame Zeitachse. Die Karten bündeln Starts in beschrifteten 30-Minuten-Fenstern; sie stellen keine Ausführungsdauer dar. Ein Zeitfenster auswählen, um rechts alle exakten Starts zu sehen. Identische Startzeitpunkte werden als gleichzeitige Starts markiert. Nacht/Tag/Abend schränken den sichtbaren Zeitraum ein; **Ganzer Tag** zeigt wieder alle Zeiten. Lange Tageslisten lassen sich über **Weitere Starts anzeigen** vollständig öffnen.
 
 Auf kleinen Bildschirmen zwischen **Tagesliste** und **Wochenraster** wechseln. Dienstfarben werden durch Namen/Kürzel ergänzt. Icons erscheinen automatisch, wenn Docker ein nutzbares `net.unraid.docker.icon`-Label mit HTTP(S)-Bildadresse liefert. Die Bilder müssen im Browser erreichbar sein; sonst erscheint das Kürzel. Keine neue Konfiguration oder zusätzlichen Mounts erforderlich.
+
+## Planung und Wichtigkeit (0.6)
+
+**Planung** ist die Standardansicht ohne bekannte Hintergrundarbeit. **Nur wichtig**, **Hintergrund** und **Alles** ändern den sichtbaren Umfang. Eigene und unbekannte Tasks bleiben zunächst **Ungeprüft** in Planung sichtbar. Unter **Details & Einstufung** die Anzeigepriorität bei Bedarf ändern; **Automatisch** stellt die Vorgabe wieder her. Diese Auswahl bleibt serverseitig in `/config/task-priorities.json` erhalten und verändert weder Cron noch App-Einstellungen.
+
+Der Zeitplantyp lässt sich getrennt filtern. Manuelle oder andere Aufgaben ohne Start in dieser Woche stehen unter **Weitere Aufgaben**. Planungshinweise zu gleichen Startzeiten verwenden weiterhin alle erfassten Termine der geladenen Woche. Ohne Laufzeiten und Daten-/Dienstbeziehungen kann Taskline noch keine Konfliktfreiheit oder konsistente Sicherung bestätigen. Ein Hinweis auf gleiche Starts ist kein Nachweis für einen Schaden. Keine zusätzlichen Mounts erforderlich.
