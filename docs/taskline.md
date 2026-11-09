@@ -35,13 +35,21 @@ Zum Teilen des Ergebnisses reichen Task-Anzahl, Fehlermeldungen und der Vergleic
 
 ## Duplicati hinzufügen
 
-Nach einem Taskline-Update unter **Container & Scans** beim Duplicati-Container **Tasks scannen** wählen. Adapter **Duplicati**, vom Container erreichbare Basis-URL (normalerweise Port 8200) und das **Passwort der Duplicati-Weboberfläche** eingeben. Es ist kein API-Key nötig; nicht die Verschlüsselungspassphrase eines Backup-Auftrags verwenden.
+Nach einem Taskline-Update unter **Container & Scans** beim Duplicati-Container **Aufgaben einlesen** bzw. **Erneut einlesen** wählen. Duplicati wird automatisch zugeordnet; eine Korrektur ist unter **Erkannte Anwendung korrigieren** möglich. Vom Container erreichbare Basis-URL (normalerweise Port 8200) und das **Passwort der Duplicati-Weboberfläche** eingeben. Es ist kein API-Key nötig; nicht die Verschlüsselungspassphrase eines Backup-Auftrags verwenden.
 
-Taskline meldet sich für diesen Scan an und liest ausschließlich Backup-/Zeitplandaten. Passwort und Token werden nicht gespeichert. Backup-Ziele, Quellpfade und Verschlüsselungseinstellungen werden nicht in Taskline übernommen. Duplicati bleibt unverändert; kein Backup wird gestartet. Die Zugangsdaten ermöglichen grundsätzlich dieselben Rechte wie die Weboberfläche.
+Taskline meldet sich für diesen Scan an und liest ausschließlich Backup-/Zeitplandaten. Der kurzlebige Token wird nicht gespeichert. Die URL wird gemerkt; das Passwort wird nur bei aktivierter Option **Zugangsdaten für weitere Scans merken** lokal gespeichert. Backup-Ziele, Quellpfade und Verschlüsselungseinstellungen werden nicht in Taskline übernommen. Duplicati bleibt unverändert; kein Backup wird gestartet. Die Zugangsdaten ermöglichen grundsätzlich dieselben Rechte wie die Weboberfläche.
 
 Backup-Namen, erlaubte Wochentage und nächste Starts mit Duplicati vergleichen. Jobs ohne Zeitplan oder deaktivierte Jobs bleiben in der Liste, aber ohne Kalendertermine. Komplexe nicht unterstützte Regeln bekommen eine Erklärung statt erfundener Prognosen. Der Adapter benötigt Duplicatis moderne Passwort-/JWT-API; getestet gegen eine isolierte offizielle Version 2.4.1.0.
 
 Bei HTTP 401 das Web-Passwort prüfen. Bei HTTP 403 die Basis-URL und Duplicatis erlaubte Hostnamen gezielt prüfen; keine pauschale Abschaltung der Hostname-Prüfung ist erforderlich. HTTP 404 beim Login kann auf eine falsche Basis-URL oder eine ältere, nicht unterstützte Duplicati-Version hinweisen.
+
+## Wiederholte Scans und Filter
+
+URL und Anwendung werden nach erfolgreichem Scan wiederverwendet. Optional API-Key/Web-Passwort merken, damit beim nächsten Scan ein leeres Passwortfeld genügt. Die Speicherung erfolgt in `/config/connections.json` im Klartext mit Dateirechten 0600; Appdata-Backups enthalten dann vertrauliche Zugangsdaten. Der Browser erhält die Werte nicht. **Gespeicherte Zugangsdaten entfernen** löscht sie wieder, ohne Tasks oder URL zu entfernen.
+
+Vorherige Dialogeingaben aus Version 0.3.0 wurden nicht gespeichert; diese einmal neu eingeben. Die vorhandene `integrations.json` bleibt unterstützt.
+
+Im Stundenplan sind die farbigen Dienst-Badges mehrfach auswählbar. Keine Auswahl bedeutet alle Dienste; **Alle Dienste** setzt zurück. Containerkarten markieren erkannt/eingerichtet/eingelesen/nicht zugeordnet. Grün ist ein historischer Scan-Erfolg, kein Live-Verbindungstest.
 
 ## Updates
 
