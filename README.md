@@ -58,7 +58,7 @@ and other private data before posting.
 
 ## Unraid Taskline
 
-Task discovery and a shared weekly timetable for Unraid cron, User Scripts and Docker applications. Radarr is the first supported application adapter.
+Task discovery and a shared weekly timetable for Unraid cron, User Scripts and Docker applications. Radarr and Duplicati application adapters are supported.
 
 - Template: [`taskline.xml`](taskline.xml)
 - Image: `ghcr.io/shaisegal/unraid-taskline:latest`
