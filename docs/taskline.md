@@ -70,3 +70,9 @@ Auf kleinen Bildschirmen zwischen **Tagesliste** und **Wochenraster** wechseln. 
 **Planung** ist die Standardansicht ohne bekannte Hintergrundarbeit. **Nur wichtig**, **Hintergrund** und **Alles** ändern den sichtbaren Umfang. Eigene und unbekannte Tasks bleiben zunächst **Ungeprüft** in Planung sichtbar. Unter **Details & Einstufung** die Anzeigepriorität bei Bedarf ändern; **Automatisch** stellt die Vorgabe wieder her. Diese Auswahl bleibt serverseitig in `/config/task-priorities.json` erhalten und verändert weder Cron noch App-Einstellungen.
 
 Der Zeitplantyp lässt sich getrennt filtern. Manuelle oder andere Aufgaben ohne Start in dieser Woche stehen unter **Weitere Aufgaben**. Planungshinweise zu gleichen Startzeiten verwenden weiterhin alle erfassten Termine der geladenen Woche. Ohne Laufzeiten und Daten-/Dienstbeziehungen kann Taskline noch keine Konfliktfreiheit oder konsistente Sicherung bestätigen. Ein Hinweis auf gleiche Starts ist kein Nachweis für einen Schaden. Keine zusätzlichen Mounts erforderlich.
+
+## Tabelle und leere Abschnitte (0.7)
+
+Das Raster steht in voller Breite im Seitenfluss, ohne eigenen Scrollbereich. Uhrzeiten stehen an der Achse; exakte Starts bleiben in den Details. Leere Abschnitte länger als drei Stunden werden nur dann gemeinsam eingeklappt, wenn über alle angezeigten Tage kein Start darin liegt. Der schraffierte Balken nennt Zeitraum und Stunden und lässt sich auf-/zuklappen. Den Schalter **Leere Abschnitte über 3 Stunden zusammenklappen** ausschalten, um alle Halbstunden zu sehen. Diese Einstellung bleibt im Browser erhalten. Die Tagesagenda steht unter der Tabelle.
+
+„Ohne angezeigte Starts“ bezieht sich auf die gewählten Filter, nicht auf garantiert freie Laufzeit. Planungshinweise berücksichtigen weiterhin alle erfassten Starts der Woche. Keine geänderten Mounts oder App-Einstellungen erforderlich.
