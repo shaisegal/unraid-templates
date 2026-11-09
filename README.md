@@ -55,3 +55,15 @@ excerpt, and steps to reproduce. Remove journal content, credentials, secrets,
 and other private data before posting.
 
 [Review of obsolete template-sync PRs (2026-11-08)](docs/pull-request-review-2026-11-08.md)
+
+## Unraid Taskline
+
+Task discovery and a shared weekly timetable for Unraid cron, User Scripts and Docker applications. Radarr is the first supported application adapter.
+
+- Template: [`taskline.xml`](taskline.xml)
+- Image: `ghcr.io/shaisegal/unraid-taskline:latest`
+- Web UI: host port `18082`
+- Persistent data: `/mnt/user/appdata/taskline`
+- [Installation and Radarr acceptance test](docs/taskline.md)
+
+Canonical Taskline artifacts are maintained in the private `shaisegal/unraid-taskline` source repository. The Docker socket grants daemon privileges even with a read-only mount; a filtered proxy is an alternative. Host collection and application scans are read-only; no backup or scan job is started.
