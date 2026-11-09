@@ -9,13 +9,13 @@
   <Privileged>false</Privileged>
   <Support>https://github.com/shaisegal/unraid-templates/issues</Support>
   <Project>https://github.com/shaisegal/unraid-templates/blob/main/docs/taskline.md</Project>
-  <Overview>Read-only task discovery for Unraid. Lists Docker containers, scans Radarr scheduled tasks via its API, and combines results with host cron and User Scripts. Combines cron forecasts and recurring Radarr task projections in a weekly timetable. Other application adapters are not yet available. Docker socket access grants Docker daemon privileges even with a read-only mount; an endpoint-filtered proxy is recommended. Use only on a trusted LAN.</Overview>
+  <Overview>Read-only task discovery for Unraid. Lists Docker containers, scans Radarr scheduled tasks and Duplicati backup schedules via their APIs, and combines results with host cron and User Scripts. Combines cron forecasts and recurring Radarr task projections in a weekly timetable. Other application adapters are not yet available. Docker socket access grants Docker daemon privileges even with a read-only mount; an endpoint-filtered proxy is recommended. Use only on a trusted LAN.</Overview>
   <Category>Tools: Productivity:</Category>
   <WebUI>http://[IP]:[PORT:8080]</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/taskline.xml</TemplateURL>
   <Icon>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/taskline-icon.png</Icon>
   <ExtraParams>--cap-drop=ALL --security-opt=no-new-privileges:true</ExtraParams>
-  <Requires>Radarr requires a reachable URL and API key. Host paths must exist.</Requires>
+  <Requires>Radarr needs its URL and API key; Duplicati needs its URL and web password. Host paths must exist.</Requires>
   <Config Name="Web UI Port" Target="8080" Default="18082" Mode="tcp" Description="Taskline web interface." Type="Port" Display="always" Required="true" Mask="false">18082</Config>
   <Config Name="Configuration and Scan Results" Target="/config" Default="/mnt/user/appdata/taskline" Mode="rw" Description="Persistent scan snapshots and optional integrations.json credentials." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/taskline</Config>
   <Config Name="Host Cron" Target="/host/etc/cron.d" Default="/etc/cron.d" Mode="ro" Description="Unraid BusyBox per-user crontabs." Type="Path" Display="always" Required="true" Mask="false">/etc/cron.d</Config>

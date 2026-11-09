@@ -33,6 +33,16 @@ Das Skript bindet den Docker-Socket ein; `:ro` ist keine Begrenzung der Docker-D
 
 Zum Teilen des Ergebnisses reichen Task-Anzahl, Fehlermeldungen und der Vergleich mit Radarr. Keine API-Keys, Cron-Befehle mit Zugangsdaten oder vollständigen privaten Konfigurationsdateien posten.
 
+## Duplicati hinzufügen
+
+Nach einem Taskline-Update unter **Container & Scans** beim Duplicati-Container **Tasks scannen** wählen. Adapter **Duplicati**, vom Container erreichbare Basis-URL (normalerweise Port 8200) und das **Passwort der Duplicati-Weboberfläche** eingeben. Es ist kein API-Key nötig; nicht die Verschlüsselungspassphrase eines Backup-Auftrags verwenden.
+
+Taskline meldet sich für diesen Scan an und liest ausschließlich Backup-/Zeitplandaten. Passwort und Token werden nicht gespeichert. Backup-Ziele, Quellpfade und Verschlüsselungseinstellungen werden nicht in Taskline übernommen. Duplicati bleibt unverändert; kein Backup wird gestartet. Die Zugangsdaten ermöglichen grundsätzlich dieselben Rechte wie die Weboberfläche.
+
+Backup-Namen, erlaubte Wochentage und nächste Starts mit Duplicati vergleichen. Jobs ohne Zeitplan oder deaktivierte Jobs bleiben in der Liste, aber ohne Kalendertermine. Komplexe nicht unterstützte Regeln bekommen eine Erklärung statt erfundener Prognosen. Der Adapter benötigt Duplicatis moderne Passwort-/JWT-API; getestet gegen eine isolierte offizielle Version 2.4.1.0.
+
+Bei HTTP 401 das Web-Passwort prüfen. Bei HTTP 403 die Basis-URL und Duplicatis erlaubte Hostnamen gezielt prüfen; keine pauschale Abschaltung der Hostname-Prüfung ist erforderlich. HTTP 404 beim Login kann auf eine falsche Basis-URL oder eine ältere, nicht unterstützte Duplicati-Version hinweisen.
+
 ## Updates
 
 `:latest` erlaubt die übliche Updateprüfung in Unraid Docker. Ein Update des Images übernimmt nicht automatisch neue Template-Variablen oder Mounts; Änderungen an der Vorlage bei Bedarf unter **Edit Container** nachziehen. `/config` vor Updates sichern. Diese Version speichert JSON-Snapshots und hat noch keine Datenbankmigrationen; künftige Versionen können das ändern.
