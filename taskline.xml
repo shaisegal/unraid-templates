@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Container version="2">
+  <Name>unraid-taskline</Name>
+  <Repository>ghcr.io/shaisegal/unraid-taskline:latest</Repository>
+  <Registry>https://github.com/shaisegal/unraid-taskline/pkgs/container/unraid-taskline</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/shaisegal/unraid-templates/issues</Support>
+  <Project>https://github.com/shaisegal/unraid-templates/blob/main/docs/taskline.md</Project>
+  <Overview>Read-only task discovery for Unraid. Lists Docker containers, scans Radarr scheduled tasks via its API, and combines results with host cron and User Scripts. Combines cron forecasts and recurring Radarr task projections in a weekly timetable. Other application adapters are not yet available. Docker socket access grants Docker daemon privileges even with a read-only mount; an endpoint-filtered proxy is recommended. Use only on a trusted LAN.</Overview>
+  <Category>Tools: Productivity:</Category>
+  <WebUI>http://[IP]:[PORT:8080]</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/taskline.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/shaisegal/unraid-templates/main/taskline-icon.png</Icon>
+  <ExtraParams>--cap-drop=ALL --security-opt=no-new-privileges:true</ExtraParams>
+  <Requires>Radarr requires a reachable URL and API key. Host paths must exist.</Requires>
+  <Config Name="Web UI Port" Target="8080" Default="18082" Mode="tcp" Description="Taskline web interface." Type="Port" Display="always" Required="true" Mask="false">18082</Config>
+  <Config Name="Configuration and Scan Results" Target="/config" Default="/mnt/user/appdata/taskline" Mode="rw" Description="Persistent scan snapshots and optional integrations.json credentials." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/taskline</Config>
+  <Config Name="Host Cron" Target="/host/etc/cron.d" Default="/etc/cron.d" Mode="ro" Description="Unraid BusyBox per-user crontabs." Type="Path" Display="always" Required="true" Mask="false">/etc/cron.d</Config>
+  <Config Name="User Scripts" Target="/host/boot/config/plugins/user.scripts" Default="/boot/config/plugins/user.scripts" Mode="ro" Description="Optional. Only mount if the User Scripts plugin is installed." Type="Path" Display="always" Required="false" Mask="false">/boot/config/plugins/user.scripts</Config>
+  <Config Name="Docker Socket" Target="/var/run/docker.sock" Default="/var/run/docker.sock" Mode="ro" Description="Optional when using a proxy. Socket access grants daemon privileges despite ro. App only requests GET /containers/json?all=1." Type="Path" Display="advanced" Required="false" Mask="false">/var/run/docker.sock</Config>
+  <Config Name="Docker Endpoint" Target="DOCKER_HOST" Default="unix:///var/run/docker.sock" Mode="" Description="Unix socket or HTTP(S) endpoint-filtered proxy; only GET /containers/json is needed. Remove the socket mount when using a proxy." Type="Variable" Display="advanced" Required="true" Mask="false">unix:///var/run/docker.sock</Config>
+  <Config Name="Cron Day Matching" Target="CRON_DAY_OR" Default="true" Mode="" Description="true: POSIX day-of-month OR weekday when both restricted. Set false only for a scheduler that requires both." Type="Variable" Display="advanced" Required="true" Mask="false">true</Config>
+  <Config Name="Time Zone" Target="TZ" Default="Europe/Berlin" Mode="" Description="Container time zone; timetable uses browser local time." Type="Variable" Display="always" Required="true" Mask="false">Europe/Berlin</Config>
+</Container>
