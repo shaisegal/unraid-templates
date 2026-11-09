@@ -1,8 +1,10 @@
 # Unraid Taskline installieren und prüfen
 
-## Einmalig vor der ersten Installation
+## Vorhandene GHCR-Anmeldung verwenden
 
-Das GHCR-Paket `shaisegal/unraid-taskline` muss öffentlich abrufbar sein, oder Unraid benötigt eine Registry-Anmeldung. Das Quellrepository bleibt privat. GitHub veröffentlicht neue Pakete zunächst privat; die Sichtbarkeit lässt sich in den [Paketeinstellungen](https://github.com/users/shaisegal/packages/container/unraid-taskline/settings) über **Change visibility → Public** ändern. Diese Einstellung ist unabhängig von der Sichtbarkeit des Quellrepositories.
+Taskline kann wie Pipelinarr mit privatem Quellrepository und privatem Container-Image installiert werden. Docker verwendet beim Download automatisch die auf dem Unraid-Host gespeicherte Anmeldung für `ghcr.io`. Wenn Pipelinarr dort bereits privat geladen wird und das verwendete Konto/Token auch Taskline lesen darf, ist keine erneute Anmeldung nötig. Das Paket muss nicht öffentlich gestellt werden.
+
+Nur bei einem tatsächlichen Zugriffsfehler die bestehende Anmeldung prüfen: Der GitHub-Benutzer benötigt Zugriff auf das Paket, ein verwendeter klassischer PAT mindestens `read:packages`. Bei eingeschränktem Repository-/Paketzugriff auch Taskline freigeben. Zugangsdaten nicht in das Template oder die Kommandozeile schreiben. Ein fehlgeschlagener anonymer Download sagt nichts über den bereits angemeldeten Unraid-Host aus.
 
 ## Installation über das Unraid-Webterminal
 
@@ -15,7 +17,7 @@ sh /tmp/install-taskline.sh
 
 Vor Ausführung kann das Skript mit `cat /tmp/install-taskline.sh` geprüft werden. Für einen anderen Port: `TASKLINE_PORT=18083 sh /tmp/install-taskline.sh`. Für einen bestimmten Versions-Tag: `TASKLINE_IMAGE=ghcr.io/shaisegal/unraid-taskline:0.1.0 sh /tmp/install-taskline.sh`.
 
-Falls `docker pull` mit `denied` abbricht, wurde das Image noch nicht auf Public gestellt bzw. es fehlt eine Registry-Anmeldung. Vor diesem Schritt werden weder Container noch Taskline-Appdata angelegt.
+Falls `docker pull` tatsächlich mit `denied` abbricht, die vorhandene Registry-Anmeldung und die Zugriffsrechte auf das neue Taskline-Paket prüfen; eine öffentliche Freigabe ist nicht erforderlich. Vor diesem Schritt werden weder Container noch Taskline-Appdata angelegt.
 
 Das Skript bindet den Docker-Socket ein; `:ro` ist keine Begrenzung der Docker-Daemon-Rechte. Alternativ das Template manuell installieren und einen auf `GET /containers/json` beschränkten Proxy verwenden. Der Prozess muss die eingebundenen Quellen lesen können. Es werden keine rekursiven chmod/chown-Änderungen an Host-Daten ausgeführt.
 
